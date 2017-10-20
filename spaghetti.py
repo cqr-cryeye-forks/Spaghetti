@@ -36,7 +36,6 @@ class Spaghetti(object):
 				)
 		except getopt.error,e:
 			self.bn.usage(True)
-		print argv
 		for o,a in opts:
 			if o in ('-u','--url'):
 				  self.url = self.target(a)
