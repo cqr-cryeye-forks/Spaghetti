@@ -1,59 +1,46 @@
-#!/usr/bin/env python 
-# -*- coding:utf-8 -*-
-#
-# @name:    Spaghetti - Web Application Security Scanner
-# @repo:    https://github.com/m4ll0k/Spaghetti
-# @author:  Momo Outaadi (M4ll0k)
-# @license: See the file 'LICENSE.txt'
-
+import contextlib
 import re
-import urllib
+from urllib import parse
 
-from utils import text
+from bs4 import BeautifulSoup
+
 from request import urlcheck
-from BeautifulSoup import BeautifulSoup
+from utils import text
+
 
 class Forms:
-	def run(self,content,url):
-		forms = []
-		try:
-			soup = BeautifulSoup(content)
-			for match in soup.findAll('form'):
-				if match not in forms:
-					forms.append(match)
-			for form in forms:
-				return urlcheck.UrlCheck().path(url,self.extractor(form))
-		except Exception,e:
-			pass
+    def run(self, content, url):
+        forms = []
+        with contextlib.suppress(Exception):
+            soup = BeautifulSoup(content, features="html.parser")
+            for match in soup.findAll('form'):
+                if match not in forms:
+                    forms.append(match)
+            for form in forms:
+                return urlcheck.UrlCheck().path(url, self.extractor(form))
 
-	def extractor(self,form):
-		form = text.UTF8(form)
-		method = []
-		action = []
-		names = []
-		values = []
-		try:
-			method += re.findall(r'method=[\"](.+?)[\"]',form,re.I)
-			action += re.findall(r'action=[\"](.+?)[\"]',form,re.I)
-			names += re.findall(r'name=[\"](.+?)[\"]',form,re.I)
-			values += re.findall(r'value=(\S*)',form,re.I)
-		except Exception,e:
-			pass
-		params = []
-		try:
-			for i in range(len(names)):
-				values[i] = values[i].split('"')[1]
-				params.append(names[i])
-				params.append(values[i])
-		except:
-			pass
-		try:
-			params = zip(*[iter(params)]*2)
-			data = urllib.unquote(urllib.urlencode(params))
-			if method == []:
-				method = ['get']
-			method = method[0]
-			if method.upper() == "GET":
-				return data
-		except Exception,e:
-			pass
+    @staticmethod
+    def extractor(form):
+        form = text.convert_to_utf_8(form)
+        method = []
+        action = []
+        names = []
+        values = []
+        with contextlib.suppress(Exception):
+            method += re.findall(r'method=\"(.+?)\"', form, re.I)
+            action += re.findall(r'action=\"(.+?)\"', form, re.I)
+            names += re.findall(r'name=\"(.+?)\"', form, re.I)
+            values += re.findall(r'value=(\S*)', form, re.I)
+        params = []
+        with contextlib.suppress(Exception):
+            for i in range(len(names)):
+                values[i] = values[i].split('"')[1]
+                params.extend((names[i], values[i]))
+        with contextlib.suppress(Exception):
+            params = list(zip(*[iter(params)]*2))
+            data = parse.unquote(parse.urlencode(params))
+            if not method:
+                method = ['get']
+            method = method[0]
+            if method.upper() == "GET":
+                return data

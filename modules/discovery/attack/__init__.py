@@ -1,9 +1,7 @@
-#!/usr/bin/env python 
-# -*- coding:utf-8 -*-
-#
-# @name:    Spaghetti - Web Application Security Scanner
-# @repo:    https://github.com/m4ll0k/Spaghetti
-# @author:  Momo Outaadi (M4ll0k)
-# @license: See the file 'LICENSE.txt'
-
-pass
+from .html import Html
+from .ldap import LDAP
+from .php import Php
+from .rfi import Rfi
+from .sql import Sql
+from .xpath import Xpath
+from .xss import Xss

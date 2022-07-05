@@ -1,66 +1,65 @@
-#!/usr/bin/env python 
-# -*- coding:utf-8 -*-
-#
-# @name:    Spaghetti - Web Application Security Scanner
-# @repo:    https://github.com/m4ll0k/Spaghetti
-# @author:  Momo Outaadi (M4ll0k)
-# @license: See the file 'LICENSE.txt
-
 import os
 import sys
-from colors import Colors
+
+from utils.arguments import cli_arguments
+from utils.colors import FakeColors, Colors
+
 
 class Banner:
-	
-	r  = Colors().red(1)
-	y  = Colors().yellow(9)
-	ny = Colors().yellow(0)
-	nw = Colors().white(0)
-	e  = Colors().end()
-	
-	def banner(self):
-		print self.ny+"  _____             _       _   _   _ "+self.e
-		print self.ny+" |   __|___ ___ ___| |_ ___| |_| |_|_|"+self.e
-		print self.ny+" |__   | . | .'| . |   | -_|  _|  _| |"+self.e
-		print self.ny+" |_____|  _|__,|_  |_|_|___|_| |_| |_|"+self.e
-		print self.ny+"       |_|     |___|          "+self.r+"v0.1.3\n"+self.e
-		print self.nw+"~/#"+self.e+" Spaghetti - Web Application Security Scanner"+self.e
-		print self.nw+"~/#"+self.e+" Codename - "+self.y+"MR.R0B0T"+self.e
-		print self.nw+"~/#"+self.e+" Momo Outaadi (@M4ll0k)"+self.e
-		print self.nw+"~/#"+self.e+" https://github.com/m4ll0k/Spaghetti\n"+self.e
+    def __init__(self, use_colors: bool = True):
+        used_colors = FakeColors()
+        if cli_arguments.no_color:
+            used_colors = FakeColors()
+        if use_colors:
+            used_colors = Colors()
+        self.RED = used_colors.red(1)
+        self.YELLOW = used_colors.yellow(9)
+        self.DARK_YELLOW = used_colors.yellow(0)
+        self.WHITE = used_colors.white(0)
+        self.END = used_colors.end()
 
-	def usage(self,exit=False):
-		name = os.path.basename(sys.argv[0])
-		self.banner()
-		print "Usage:\n"
-		print "\t-u --url\tTarget URL (eg: http://example.com)"
-		print "\t-s --scan\tScan Options (default=0):\n"
-		print "\t\t0:\tFull Scan"
-		print "\t\t1:\tBruteforce (dirs,files,..)"
-		print "\t\t2:\tDisclosure (ip,emails,..)"
-		print "\t\t3:\tAttacks (sql,lfi,..)"
-		print "\t\t4:\tOthers (webdav,..)"
-		print "\t\t5:\tVulns (shellshock,..)"
-		print "\t\t6:\tFingerprint only\n"
-		print "\t--crawler\tDeep crawling (slow)"
-		print "\t--agent\t\tUse the specified user-agent"
-		print "\t--random-agent\tUse a random user-agent"
-		print "\t--redirect\tRedirect target URL, default=True"
-		print "\t--timeout\tSet timeout, default=None"
-		print "\t--cookie\tSet cookie, default=None"
-		print "\t--proxy\t\tSet proxy, (host:port)"
-		print "\t--verbose\tVerbose output"
-		print "\t--version\tShow version"
-		print "\t--help\t\tShow this help and exit\n"
-		print "Examples:\n"
-		print "\t"+name+" --url http://example.com"
-		print "\t"+name+" --url http://example.com --scan [0-6]"
-		print "\t"+name+" --url http://example.com --scan 1 --crawler\n"
-		if exit:
-			sys.exit(0)
+    def banner(self):
+        print(f"{self.DARK_YELLOW}  _____             _       _   _   _ {self.END}\n"
+              f"{self.DARK_YELLOW} |   __|___ ___ ___| |_ ___| |_| |_|_|{self.END}\n"
+              f"{self.DARK_YELLOW} |__   | . | .'| . |   | -_|  _|  _| |{self.END}\n"
+              f"{self.DARK_YELLOW} |_____|  _|__,|_  |_|_|___|_| |_| |_|{self.END}\n"
+              f"{self.DARK_YELLOW}       |_|     |___|          {self.RED}v0.1.4\n{self.END}\n"
+              f"{self.WHITE}~/#{self.END} Spaghetti - Web Application Security Scanner{self.END}\n"
+              f"{self.WHITE}~/#{self.END} Codename - {self.YELLOW}MR.R0B0T{self.END}\n"
+              f"{self.WHITE}~/#{self.END} Momo Outaadi (@M4ll0k){self.END}\n"
+              f"{self.WHITE}~/#{self.END} https://github.com/cqr-cryeye-forks/Spaghetti\n{self.END}\n")
 
-	def version(self,exit=False):
-		self.banner()
-		print "~/# Spaghetti - Web Application Security Scanner (v0.1.3\n"
-		if exit:
-			sys.exit(0)
+    def usage(self, is_exit: bool = False):
+        name = os.path.basename(sys.argv[0])
+        self.banner()
+        print("Usage:\n"
+              "\t-u --url\tTarget URL (eg: http://example.com)\n"
+              "\t-s --scan\tScan Options (default=0):\n\n"
+              "\t\t0:\tFull Scan\n"
+              "\t\t1:\tBruteforce (dirs,files,..)\n"
+              "\t\t2:\tDisclosure (ip,emails,..)\n"
+              "\t\t3:\tAttacks (sql,lfi,..)\n"
+              "\t\t4:\tOthers (webdav,..)\n"
+              "\t\t5:\tVulnerabilities (shellshock,..)\n"
+              "\t\t6:\tFingerprint only\n\n"
+              "\t--crawler\tDeep crawling (slow)\n"
+              "\t--agent\t\tUse the specified user-agent\n"
+              # "\t--random-agent\tUse a random user-agent\n"
+              "\t--redirect\tRedirect target URL, default=True\n"
+              "\t--timeout\tSet timeout, default=None\n"
+              "\t--cookie\tSet cookie, default=None\n"
+              "\t--proxy\t\tSet proxy, (host:port)\n"
+              "\t--verbose\tVerbose output\n"
+              "\t--version\tShow version\n""\t--help\t\tShow this help and exit\n\n"
+              "Examples:\n\n"
+              f"\t{name} --url http://example.com\n"
+              f"\t{name} --url http://example.com --scan [0-6]\n"
+              f"\t{name} --url http://example.com --scan 1 --crawler\n\n")
+        if is_exit:
+            sys.exit(0)
+
+    def version(self, is_exit: bool = False):
+        self.banner()
+        print("~/# Spaghetti - Web Application Security Scanner (v0.1.3\n")
+        if is_exit:
+            sys.exit(0)

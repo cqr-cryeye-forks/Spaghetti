@@ -1,21 +1,10 @@
-#!/usr/bin/env python 
-# -*- coding:utf-8 -*-
-#
-# @name:    Spaghetti - Web Application Security Scanner
-# @repo:    https://github.com/m4ll0k/Spaghetti
-# @author:  Momo Outaadi (M4ll0k)
-# @license: See the file 'LICENSE.txt
+from modules.fingerprints.cms import drupal, joomla, wordpress, magento
 
 
-import drupal
-import joomla
-import wordpress
-import magento
-
-def Cms(content):
-	return (
-		drupal.Drupal().run(content),
-		joomla.Joomla().run(content),
-		wordpress.Wordpress().run(content),
-		magento.Magento().run(content)
-		)	
+def check_cms(content):
+    return (
+        drupal.Drupal().run(content),
+        joomla.Joomla().run(content),
+        wordpress.Wordpress().run(content),
+        magento.Magento().run(content)
+    )

@@ -1,33 +1,66 @@
-#!/usr/bin/env python 
-# -*- coding:utf-8 -*-
-#
-# @name:    Spaghetti - Web Application Security Scanner
-# @repo:    https://github.com/m4ll0k/Spaghetti
-# @author:  Momo Outaadi (M4ll0k)
-# @license: See the file 'LICENSE.txt
-
 class Colors:
-	# red
-	def red(self,number):
-		return "\033[" +str(number)+ ";31m"
-	# green
-	def green(self,number):
-		return "\033[" +str(number)+ ";32m"
-	# yellow
-	def yellow(self,number):
-		return "\033[" +str(number)+ ";33m"
-	# blue
-	def blue(self,number):
-		return "\033[" +str(number)+ ";34m"
-	# purple
-	def purple(self,number):
-		return "\033[" +str(number)+ ";35m"
-	# cyan
-	def cyan(self,number):
-		return "\033[" +str(number)+ ";36m"
-	# white
-	def white(self,number):
-		return "\033[" +str(number)+ ";38m"
-	# end
-	def end(self):
-		return "\033[0m"
+    @staticmethod
+    def red(number):
+        return "\033[" + str(number) + ";31m"
+
+    @staticmethod
+    def green(number):
+        return "\033[" + str(number) + ";32m"
+
+    @staticmethod
+    def yellow(number):
+        return "\033[" + str(number) + ";33m"
+
+    @staticmethod
+    def blue(number):
+        return "\033[" + str(number) + ";34m"
+
+    @staticmethod
+    def purple(number):
+        return "\033[" + str(number) + ";35m"
+
+    @staticmethod
+    def cyan(number):
+        return "\033[" + str(number) + ";36m"
+
+    @staticmethod
+    def white(number):
+        return "\033[" + str(number) + ";38m"
+
+    @staticmethod
+    def end():
+        return "\033[0m"
+
+
+class FakeColors(Colors):
+    @staticmethod
+    def red(number):
+        return ""
+
+    @staticmethod
+    def green(number):
+        return ""
+
+    @staticmethod
+    def yellow(number):
+        return ""
+
+    @staticmethod
+    def blue(number):
+        return ""
+
+    @staticmethod
+    def purple(number):
+        return ""
+
+    @staticmethod
+    def cyan(number):
+        return ""
+
+    @staticmethod
+    def white(number):
+        return ""
+
+    @staticmethod
+    def end():
+        return ""
